@@ -2,11 +2,12 @@ import requests
 import os
 import json
 import csv
-import datetime
+from datetime import datetime, timedelta, timezone
 import dateutil.parser
-import unicodedata
 import time
 import config
+
+JSONlist = []
 
 
 def auth():
@@ -38,7 +39,7 @@ def connect_to_endpoint(url, headers, params, next_token = None):
     return response.json()
 
 
-def append_to_csv(json_response, fileName, result_count):
+def convertData(json_response, fileName, result_count):
 
     #A counter variable
     counter = 0
@@ -72,9 +73,26 @@ def append_to_csv(json_response, fileName, result_count):
                     name = user['name']
                     username = user['username']
             
-            ratio = float(like_count / followers_count if followers_count else like_count)
+            ratio = like_count / followers_count if followers_count else like_count
             
             res = [ratio, text, created_at, username, name, tweet_id, like_count, followers_count, author_id]
+            
+            # JSON Data
+            res_json = {
+                "tweet_id" : int(tweet_id),
+                "author_id" : int(author_id),
+                "created_at" : str(created_at),
+                "text" : text,
+                "ratio" : float(ratio),
+                "like_count" : int(like_count),
+                "author" : {
+                    "username" : username,
+                    "name" : name,
+                    "followers_count" : int(followers_count)
+                }
+            }
+
+            JSONlist.append(res_json)
             
             # Append the result to the CSV file
             csvWriter.writerow(res)
@@ -82,6 +100,7 @@ def append_to_csv(json_response, fileName, result_count):
 
     # When done, close the CSV file
     csvFile.close()
+    
 
     # Print the number of tweets for this iteration
     print("# of Tweets added / fetched : ", counter, "/", result_count)
@@ -96,8 +115,11 @@ def main():
     bearer_token = auth()
     headers = create_headers(bearer_token)
     keyword = config.query
-    today = datetime.datetime.utcnow().date()
-    yesterday = today - datetime.timedelta(days=1)
+    
+    today = datetime.now(timezone.utc).astimezone()
+    yesterday = datetime.now(timezone.utc).astimezone()
+    # yesterday = dateutil.parser.parse(datetime.now() - timedelta(days=1))
+    
     max_results = 100
 
     #Total number of tweets we collected from the loop
@@ -105,7 +127,7 @@ def main():
     total_tweets_added = 0
 
     # Create file
-    csvFile = open("data.csv", "a", newline="", encoding='utf-8')
+    csvFile = open(config.export_csv, "a", newline="", encoding='utf-8')
     csvWriter = csv.writer(csvFile)
 
     #Create headers for the data you want to save, in this example, we only want save these columns in our dataset
@@ -113,8 +135,7 @@ def main():
     csvFile.close()
 
     # Inputs
-    count = 0 # Counting tweets per time period
-    max_count = 100 # Max tweets per time period
+    count = 0 # Counting tweets per time period+
     flag = True
     next_token = None
     
@@ -131,7 +152,7 @@ def main():
 
         print("-------------------")
         print("Token: ", next_token)
-        url = create_url(keyword, str(yesterday),str(today), max_results)
+        url = create_url(keyword, yesterday.isoformat(),today.isoformat(), max_results)
         json_response = connect_to_endpoint(url[0], headers, url[1], next_token)
         result_count = json_response['meta']['result_count']
 
@@ -140,8 +161,8 @@ def main():
             next_token = json_response['meta']['next_token']
             print("Next Token: ", next_token)
             if result_count is not None and result_count > 0 and next_token is not None:
-                print("Start Date: ", str(yesterday))
-                tmp_count = append_to_csv(json_response, "data.csv", result_count)
+                print("Start Date: ", yesterday.isoformat())
+                tmp_count = convertData(json_response, config.export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
                 total_tweets += result_count
@@ -153,8 +174,8 @@ def main():
         else:
             if result_count is not None and result_count > 0:
                 print("-------------------")
-                print("Start Date: ", str(yesterday))
-                tmp_count = append_to_csv(json_response, "data.csv", result_count)
+                print("Start Date: ", yesterday.isoformat())
+                tmp_count = convertData(json_response, config.export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
                 total_tweets += result_count
@@ -167,6 +188,10 @@ def main():
             flag = False
             next_token = None
         time.sleep(5)
+    
+    
+    with open(config.export_json, 'w') as json_file:
+        json.dump(JSONlist, json_file, indent=4, separators=(',',': '))
     print("Total number of results: ", total_tweets)
 
 
