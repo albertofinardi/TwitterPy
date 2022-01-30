@@ -157,7 +157,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days
                 count += result_count
                 total_tweets_added += tmp_count
                 total_tweets += result_count
-                print("Total # of Tweets added: ", total_tweets)
+                print("Total # of Tweets fetched: ", total_tweets)
                 print("Total # of Tweets added: ", total_tweets_added)
                 print("-------------------")
                 time.sleep(5)                
