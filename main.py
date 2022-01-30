@@ -13,7 +13,7 @@ def main():
     print('\n')
     
     # Core & csv saving
-    JSONlist = tweet_manager.fetch(config.bearer_token, config.max_tweets, config.max_added_or_fetched, config.query, config.export_csv)
+    JSONlist = tweet_manager.fetch(config.bearer_token, config.max_tweets, config.max_added_or_fetched, config.query, config.export_csv, config.days_span)
     
     # Json saving
     file_manager.saveJSON(JSONlist, config.export_json)

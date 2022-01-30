@@ -16,6 +16,8 @@ def create_url(keyword, start_date, end_date, max_results = 10):
 
     #change params based on the endpoint you are using
     query_params = {'query': keyword,
+                    'start_time' : start_date,
+                    'end_time' : end_date,
                     'max_results': max_results,
                     'expansions': 'author_id',
                     'tweet.fields': 'id,text,author_id,created_at,public_metrics',
@@ -100,14 +102,14 @@ def convertData(json_response, fileName, result_count):
     return counter 
 
 
-def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv):
+def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days_span):
     #Inputs for tweets
 
     headers = create_headers(bearer_token)
     
-    today = datetime.now(timezone.utc).astimezone()
-    yesterday = datetime.now(timezone.utc).astimezone()
-    # yesterday = dateutil.parser.parse(datetime.now() - timedelta(days=1))
+    today = (datetime.now(timezone.utc) - timedelta(seconds=30)).astimezone()
+    yesterday = (today - timedelta(days=days_span)).astimezone().isoformat()
+    today = today.isoformat()
     
     max_results = 100
 
@@ -141,7 +143,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv):
 
         print("-------------------")
         print("Token: ", next_token)
-        url = create_url(keyword, yesterday.isoformat(),today.isoformat(), max_results)
+        url = create_url(keyword, yesterday, today, max_results)
         json_response = connect_to_endpoint(url[0], headers, url[1], next_token)
         result_count = json_response['meta']['result_count']
 
@@ -150,7 +152,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv):
             next_token = json_response['meta']['next_token']
             print("Next Token: ", next_token)
             if result_count is not None and result_count > 0 and next_token is not None:
-                print("Start Date: ", yesterday.isoformat())
+                print("Start Date: ", yesterday)
                 tmp_count = convertData(json_response, export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
@@ -163,7 +165,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv):
         else:
             if result_count is not None and result_count > 0:
                 print("-------------------")
-                print("Start Date: ", yesterday.isoformat())
+                print("Start Date: ", yesterday)
                 tmp_count = convertData(json_response, export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
@@ -178,5 +180,6 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv):
             next_token = None
         time.sleep(5)
     
-    print("Total number of results: ", total_tweets)
+    print("Total number of fetched: ", total_tweets)
+    print("Total number of added: ", total_tweets_added)
     return JSONlist

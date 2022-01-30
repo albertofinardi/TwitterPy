@@ -3,6 +3,8 @@ max_tweets = 500
 max_added_or_fetched = 'fetched'
 query = '(from:twitterdev -is:retweet) OR #twitterdev'
 
+days_span = 1
+
 
 backup_folder = 'backup'
 export_csv = 'data.csv'
