@@ -14,8 +14,8 @@ def main():
     print("-------------------")
     file_manager.backup(config.backup_folder, config.export_csv + '.csv', config.export_csv_backup + '.csv')
     file_manager.backup(config.backup_folder, config.export_json + '.json', config.export_json_backup + '.json')
-    file_manager.delete(config.export_csv)
-    file_manager.delete(config.export_json)
+    file_manager.delete(config.export_csv + '.csv')
+    file_manager.delete(config.export_json + '.json')
     print("-------------------")
     print('\n')
     
@@ -30,6 +30,7 @@ def printConfig():
     print('---- Settings ----')
     print('Bearer token: ', config.bearer_token)
     print('Max tweets ', config.max_tweets)
+    print('Min likes ', config.min_likes)
     print('Added/Fetched mode: ', config.max_added_or_fetched)
     print('Query: ', config.query)
     print('Days span: ', config.days_span)

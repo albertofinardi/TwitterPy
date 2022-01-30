@@ -2,11 +2,11 @@ bearer_token = ""
 
 max_tweets = 500
 
-min_likes = 20000
+min_likes = 0
 
 max_added_or_fetched = 'fetched'
 
-query = 'a lang:en'
+query = '"$tsla" lang:en -is:verified -has:hashtags -has:links -has:videos -is:retweet -is:reply -has:mentions'
 
 days_span = 1
 
