@@ -1,4 +1,4 @@
-bearer_token = ""
+bearer_token = "AAAAAAAAAAAAAAAAAAAAALO0YQEAAAAAxPXdlGIE55UMqBqdNYHLDWECRJI%3DeMVK22xWpzgkps1OvOs1vX5dO3TJxJrs70Wj9yKZpNLk6p8GKi"
 max_tweets = 500
 max_added_or_fetched = 'fetched'
 query = '(from:twitterdev -is:retweet) OR #twitterdev'
