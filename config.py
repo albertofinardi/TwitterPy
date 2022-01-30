@@ -1,6 +1,8 @@
-bearer_token = "AAAAAAAAAAAAAAAAAAAAALO0YQEAAAAA5Ur6wNlHMEyYu5CWXTP8hBbOLTY%3DYXT4ydbvIVoSqvK5Hhl312fpB2CgYmLKVbr8XFbpmr4Ywfx3t1"
+bearer_token = ""
 
 max_tweets = 500
+
+min_likes = 20000
 
 max_added_or_fetched = 'fetched'
 

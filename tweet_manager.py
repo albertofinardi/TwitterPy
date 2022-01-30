@@ -34,7 +34,7 @@ def connect_to_endpoint(url, headers, params, next_token = None):
     return response.json()
 
 
-def convertData(json_response, fileName, result_count):
+def convertData(min_likes, json_response, fileName, result_count):
 
     #A counter variable
     counter = 0
@@ -47,7 +47,7 @@ def convertData(json_response, fileName, result_count):
     for tweet in json_response['data']:
         like_count = int(tweet['public_metrics']['like_count'])
         
-        if(like_count > 0):
+        if(like_count > min_likes):
             author_id = tweet['author_id']
             
             created_at = dateutil.parser.parse(tweet['created_at'])
@@ -102,7 +102,7 @@ def convertData(json_response, fileName, result_count):
     return counter 
 
 
-def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days_span):
+def fetch(min_likes, bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days_span):
     #Inputs for tweets
 
     headers = create_headers(bearer_token)
@@ -153,7 +153,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days
             print("Next Token: ", next_token)
             if result_count is not None and result_count > 0 and next_token is not None:
                 print("Start Date: ", yesterday)
-                tmp_count = convertData(json_response, export_csv, result_count)
+                tmp_count = convertData(min_likes, json_response, export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
                 total_tweets += result_count
@@ -166,7 +166,7 @@ def fetch(bearer_token, max_tweets, max_fetched_added, keyword, export_csv, days
             if result_count is not None and result_count > 0:
                 print("-------------------")
                 print("Start Date: ", yesterday)
-                tmp_count = convertData(json_response, export_csv, result_count)
+                tmp_count = convertData(min_likes, json_response, export_csv, result_count)
                 count += result_count
                 total_tweets_added += tmp_count
                 total_tweets += result_count
