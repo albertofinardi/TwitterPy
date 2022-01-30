@@ -1,4 +1,4 @@
-bearer_token = ""
+bearer_token = "AAAAAAAAAAAAAAAAAAAAALO0YQEAAAAA5Ur6wNlHMEyYu5CWXTP8hBbOLTY%3DYXT4ydbvIVoSqvK5Hhl312fpB2CgYmLKVbr8XFbpmr4Ywfx3t1"
 
 max_tweets = 500
 
