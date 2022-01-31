@@ -1,6 +1,6 @@
 # import openpyxl and tkinter modules
 from tkinter import *
-import config
+import config_manager
 import console
     
  
@@ -78,7 +78,7 @@ def start():
     else:
         # Start program
         print('Start')
-        config.save(bearer_token.get(), max_tweets.get(), min_likes.get(), max_added_or_fetched.get(), query.get(), days_span.get(), export_csv.get(), export_json.get(), backup_folder.get(), export_csv_backup.get(), export_json_backup.get())
+        config_manager.save(bearer_token.get(), max_tweets.get(), min_likes.get(), max_added_or_fetched.get(), query.get(), days_span.get(), export_csv.get(), export_json.get(), backup_folder.get(), export_csv_backup.get(), export_json_backup.get())
         console.start(bearer_token.get(), max_tweets.get(), min_likes.get(), max_added_or_fetched.get(), query.get(), days_span.get(), export_csv.get(), export_json.get(), backup_folder.get(), export_csv_backup.get(), export_json_backup.get())
 
 # Driver code
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     #max_tweets_var = StringVar(root, value=config.max_tweets)
     #bearer_token_var = StringVar(root, value=config.bearer_token)
 
-    bearer_token_var,max_tweets_var,min_likes_var,max_added_or_fetched_var,query_var,days_span_var,export_csv_var,export_json_var,backup_folder_var,export_csv_backup_var,export_json_backup_var = config.config()
+    bearer_token_var,max_tweets_var,min_likes_var,max_added_or_fetched_var,query_var,days_span_var,export_csv_var,export_json_var,backup_folder_var,export_csv_backup_var,export_json_backup_var = config_manager.config()
     
     export_json_backup_var = StringVar(root, value=export_json_backup_var)
     export_csv_backup_var = StringVar(root, value=export_csv_backup_var)
