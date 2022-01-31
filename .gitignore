@@ -1,10 +1,10 @@
 
 .DS_Store
-config.json
-config.json
+
 
 
 /__pycache__
 /backup
+
 *.csv
-*.json
+data.json
