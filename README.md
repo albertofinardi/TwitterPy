@@ -5,6 +5,7 @@
 Download the code and and start ```main.exe``` in the ```/dist``` folder
 If not working, run ```python3 main.py``` in your console (python3 needed). If python not installed, see [here](https://phoenixnap.com/kb/how-to-install-python-3-windows).
 
+## Params
 GUI application params:
 | Variable | Deafult | Type | Meaning |
 | ------ | ------ | ------ | ------ |
