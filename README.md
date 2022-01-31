@@ -2,7 +2,7 @@
 
 ## Getting started
 
-Download the code and modify ```config.py```:
+Download the code and modify ```config.json```:
 | Variable | Deafult | Type | Meaning |
 | ------ | ------ | ------ | ------ |
 | ```bearer_token``` | -- | String | Bearer token of your twitter developer account. See [here](https://developer.twitter.com/en/docs/platform-overview). |
@@ -18,3 +18,4 @@ Download the code and modify ```config.py```:
 | ```export_json_backup``` | data_backup | String | Name of json backup file (without extension). |
 
 Use ```python3 main.py``` in your console (python3 needed). If python not installed, see [here](https://phoenixnap.com/kb/how-to-install-python-3-windows).
+To see the program status, look at the terminal output.
